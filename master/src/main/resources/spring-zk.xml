@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd">
+ 
+ 	<bean id="bytesPushThroughSerializer" class="org.I0Itec.zkclient.serialize.BytesPushThroughSerializer" />
+	<bean id="zkClient" class="org.I0Itec.zkclient.ZkClient"> 
+		<constructor-arg name="zkServers" type="java.lang.String" value="127.0.0.1:2181"/>
+		<constructor-arg name="sessionTimeout" type="int" value="5000" />
+		<constructor-arg name="connectionTimeout" type="int" value="5000" />
+		<constructor-arg name="zkSerializer" ref="bytesPushThroughSerializer" />
+	</bean>
+ 
+</beans>  

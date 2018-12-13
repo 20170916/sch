@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd 
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd">
+	
+   <context:component-scan base-package="com.lo" >
+   </context:component-scan>
+   <context:annotation-config/>
+	
+	<!-- 加载配置文件 -->
+	<!-- properties属性注入 -->
+	<!--<bean id="configProperties" class="com.sf.bdp.helper.configure.ConfigurationFactoryBean" />
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="configProperties" />
+    </bean>
+    <bean id="masterContext" class="com.sf.bdp.schedule.master.core.MasterContext" factory-method="getInstance"/> 
+	<bean id="jettyDaemon" class="com.sf.bdp.schedule.core.JettyDaemon" init-method="start">
+		<property name="port" value="${jetty.port}"/>
+		<property name="minThreads" value="${jetty.thread.min}"/>
+		<property name="maxThreads" value="${jetty.thread.max}"/>
+		<property name="webappBaseTempdir" value="${jetty.webapp.basetempdir}" />
+		<property name="requestLog" value="${jetty.request.log}" />
+	</bean>
+	
+	<import resource="classpath*:spring-orm.xml" />
+	-->
+	<import resource="classpath*:spring-zk.xml" />
+</beans>
+  
