@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class HAService {
     static final Logger logger = LoggerFactory.getLogger(HAService.class);
-    private static final String MASTER_PATH="/master/active";
-    private static final String SERVERS_PATH="/master/server";
+    private static final String ACTIVE_MASTER_PATH="/master/active";
+    private static final String SERVERS_PATH="/master/servers";
     @Autowired
     private MasterContext masterContext;
     @Autowired
@@ -94,15 +94,15 @@ public class HAService {
      */
     public void elect(){
         registerMasterService();
-        subscribeChanges();
         recommendSelf();
+        subscribeChanges();
     }
 
     /**
      * 注册监听
      */
     private void subscribeChanges(){
-        zkclient.subscribeDataChanges(MASTER_PATH, masterPathListener);
+        zkclient.subscribeDataChanges(ACTIVE_MASTER_PATH, masterPathListener);
         zkclient.subscribeStateChanges(zkStateListener);
     }
 
@@ -111,7 +111,7 @@ public class HAService {
      */
     private void recommendSelf(){
         try {
-            zkclient.create(MASTER_PATH, localIp.getBytes(), CreateMode.EPHEMERAL);
+            zkclient.create(ACTIVE_MASTER_PATH, localIp.getBytes(), CreateMode.EPHEMERAL);
             masterContext.setActiveMasterIp(localIp);
             logger.info(localIp+ " is master");
 
@@ -125,7 +125,7 @@ public class HAService {
             }, 5, TimeUnit.SECONDS);
 
         } catch (ZkNodeExistsException e) {
-            byte[] data = zkclient.readData(MASTER_PATH, true);
+            byte[] data = zkclient.readData(ACTIVE_MASTER_PATH, true);
             String activeMasterIp = data == null ? null : new String(data);
             if (activeMasterIp == null) {
                 recommendSelf();
@@ -154,7 +154,7 @@ public class HAService {
 
     private boolean checkMaster() {
         try {
-            String activeMasterIp = zkclient.readData(MASTER_PATH);
+            String activeMasterIp = zkclient.readData(ACTIVE_MASTER_PATH);
             masterContext.setActiveMasterIp(activeMasterIp);
             return masterContext.getActiveMasterIp().equals(localIp);
         } catch (ZkInterruptedException e) {// 操作中断异常处理
@@ -166,7 +166,7 @@ public class HAService {
 
     private void releaseMaster() {
         if (checkMaster()) {
-            zkclient.delete(MASTER_PATH);
+            zkclient.delete(ACTIVE_MASTER_PATH);
         }
     }
 
