@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -114,16 +115,18 @@ public class HAService implements SchService{
         try {
             zkclient.create(ACTIVE_MASTER_PATH, localIp.getBytes(), CreateMode.EPHEMERAL);
             masterContext.setActiveMasterIp(localIp);
-            logger.info(localIp+ " is master");
+            logger.info(localIp+ " is active master");
+            masterContext.setState(MasterContext.State.ACTIVE);
+            this.startOtherServers();
 
-            delayExector.schedule(new Runnable() {
+           /* delayExector.schedule(new Runnable() {
                 @Override
                 public void run() {
                     if (checkMaster()) {
                         releaseMaster();
                     }
                 }
-            }, 5, TimeUnit.SECONDS);
+            }, 5, TimeUnit.SECONDS);*/
 
         } catch (ZkNodeExistsException e) {
             byte[] data = zkclient.readData(ACTIVE_MASTER_PATH, true);
@@ -132,6 +135,8 @@ public class HAService implements SchService{
                 recommendSelf();
             } else {
                 masterContext.setActiveMasterIp(activeMasterIp);
+                masterContext.setState(MasterContext.State.STANDBY);
+                logger.info(localIp+ " is standby master");
             }
         } catch (Exception e) {
             //ignore it ,do nothing
@@ -155,7 +160,8 @@ public class HAService implements SchService{
 
     private boolean checkMaster() {
         try {
-            String activeMasterIp = zkclient.readData(ACTIVE_MASTER_PATH);
+            byte[] data = zkclient.readData(ACTIVE_MASTER_PATH,true);
+            String activeMasterIp = data == null ? null : new String(data);
             masterContext.setActiveMasterIp(activeMasterIp);
             return masterContext.getActiveMasterIp().equals(localIp);
         } catch (ZkInterruptedException e) {// 操作中断异常处理
@@ -175,4 +181,10 @@ public class HAService implements SchService{
         this.elect();
     }
 
+    public void startOtherServers(){
+        List<SchService> schServices = masterContext.getSchServices();
+        for(SchService schService:schServices){
+            schService.startService();
+        }
+    }
 }
