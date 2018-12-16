@@ -21,8 +21,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-@Component
-public class HAService {
+@Component("hAService")
+public class HAService implements SchService{
     static final Logger logger = LoggerFactory.getLogger(HAService.class);
     private static final String ACTIVE_MASTER_PATH="/master/active";
     private static final String SERVERS_PATH="/master/servers";
@@ -35,7 +35,8 @@ public class HAService {
     private ScheduledExecutorService delayExector = new ScheduledThreadPoolExecutor(1);
     private String localIp;
 
-    private HAService(){
+
+    public HAService(){
         localIp = SysUtil.getIP()+" "+System.currentTimeMillis();
         masterPathListener = new IZkDataListener() {
 
@@ -92,7 +93,7 @@ public class HAService {
     /**
      * 通过zk进行选举。
      */
-    public void elect(){
+    private void elect(){
         registerMasterService();
         recommendSelf();
         subscribeChanges();
@@ -168,6 +169,10 @@ public class HAService {
         if (checkMaster()) {
             zkclient.delete(ACTIVE_MASTER_PATH);
         }
+    }
+
+    public void startService(){
+        this.elect();
     }
 
 }
