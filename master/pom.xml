@@ -11,13 +11,13 @@
 
     <artifactId>master</artifactId>
 
-    <properties>
+    <!--<properties>
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.7</zkclient.version>
         <spring.version>4.3.2.RELEASE</spring.version>
         <lombok.version>1.16.18</lombok.version>
         <junit.version>4.12</junit.version>
-    </properties>
+    </properties>-->
 
     <dependencies>
         <!--spring-->
