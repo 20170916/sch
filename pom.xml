@@ -12,11 +12,13 @@
     <properties>
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.7</zkclient.version>
-        <spring.version>4.3.2.RELEASE</spring.version>
+        <spring.version>5.0.10.RELEASE</spring.version>
         <lombok.version>1.16.18</lombok.version>
         <junit.version>4.12</junit.version>
         <hibernate.version>4.1.0.Final</hibernate.version>
         <genericdao.version>1.2.0</genericdao.version>
+        <mysql.version>5.1.13</mysql.version>
+        <druid.version>1.0.20</druid.version>
     </properties>
 
     <dependencyManagement>
@@ -28,6 +30,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -36,6 +39,7 @@
         <module>slaver</module>
         <module>web</module>
         <module>service</module>
+        <module>test</module>
     </modules>
 
     <build>

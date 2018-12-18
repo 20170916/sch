@@ -1,15 +1,9 @@
-import com.lo.core.MasterContext;
-import com.lo.service.HAService;
-import com.lo.service.SchService;
-import com.lo.service.TaskLifecycleService;
+import com.lo.bdp.sch.master.core.MasterContext;
+import com.lo.bdp.sch.master.service.SchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 //@Component
 public class Master {

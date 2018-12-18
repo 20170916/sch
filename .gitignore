@@ -4,3 +4,5 @@ slaver/slaver.iml
 master/master.iml
 doc/~$tail design.docx
 web/target/
+service/target/
+test/target/

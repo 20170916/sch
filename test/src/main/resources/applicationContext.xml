@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
 	
-   <context:component-scan base-package="com.lo.bdp.sch.master" >
+   <context:component-scan base-package="com.lo" >
    </context:component-scan>
    <context:annotation-config/>
 	<!--使用注解自动生成代理对象-->
@@ -34,6 +34,6 @@
 	
 	<import resource="classpath*:spring-orm.xml" />
 	-->
-	<import resource="classpath*:spring-zk.xml" />
+	<import resource="classpath*:spring-orm.xml" />
 </beans>
   
