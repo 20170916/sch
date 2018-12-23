@@ -180,6 +180,11 @@ public class HAService implements SchService{
         this.elect();
     }
 
+    @Override
+    public void registerSelf(SchService schService) {
+        //do nothing
+    }
+
     public void startOtherServers(){
         List<SchService> schServices = masterContext.getSchServices();
         for(SchService schService:schServices){

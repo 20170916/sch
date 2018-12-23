@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ServiceAspect {
-    static final Logger logger = LoggerFactory.getLogger(HAService.class);
+    static final Logger logger = LoggerFactory.getLogger(ServiceAspect.class);
     //@Around("execution(* startService*(..))")
     @Around("execution(* com.lo.bdp.sch.master.service..*.startService*(..))")
     public Object before(ProceedingJoinPoint proceedingJoinPoint){

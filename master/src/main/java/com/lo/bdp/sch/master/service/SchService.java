@@ -6,4 +6,9 @@ public interface SchService {
      * <p>aop会对启动入口前后做日志记录</p>
      */
     void startService();
+
+    /**
+     * 将自己注册到上下文。
+     */
+    void registerSelf(SchService schService);
 }
